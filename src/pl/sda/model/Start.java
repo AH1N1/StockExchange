@@ -14,6 +14,7 @@ public class Start extends Application {
 		launch(args);
 	}
 
+	//Must Be Here
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		new PointAndFigureChart().draw(primaryStage);

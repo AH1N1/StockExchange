@@ -20,7 +20,6 @@ public class Company {
 		this.downloadURL = downloadURL;
 	}
 
-	
 	public void downloadCSV() throws IOException {
 		// The file that will be saved on your computer
 		String fileName = name;
@@ -47,7 +46,7 @@ public class Company {
 		System.out.println(name + " downloaded");
 	}
 
-	public void parserCSV(/*String name*/) {
+	public void parserCSV(/* String name */) {
 
 		String csvFile = name + "csv";
 		BufferedReader br = null;
@@ -62,35 +61,35 @@ public class Company {
 		}
 		try {
 			while ((line = br.readLine()) != null) {
-				
+
 				String[] figures = line.split(cvsSplitBy);
-				
-				//Wrzuciæ mo¿liwoœæ wybrania jakie dane bierzemy z jakiego zakresu
-				//np. dane z lat xxxx-xxxx
-				
+
+				// Wrzuciæ mo¿liwoœæ wybrania jakie dane bierzemy z jakiego
+				// zakresu
+				// np. dane z lat xxxx-xxxx
+
 				String date = figures[0];
 				String close = figures[4];
-		//		System.out.println("Date = "        + figures[0]);
-		//		System.out.println("Open =  "       + figures[1]);
-		//		System.out.println("High =  "       + figures[2]);
-		//		System.out.println("Low = "         + figures[3]);
-		//		System.out.println("Close = "       + figures[4]);
-		//		System.out.println("Volume = "      + figures[5]);
-		//		System.out.println("Ex-dividend = " + figures[6]);
-		//		System.out.println("Split ratio = " + figures[7]);
-		//		System.out.println("Adj.open "      + figures[8]);
-		//		System.out.println("Adj.high = "    + figures[9]);
-		//		System.out.println("Adj.low = "     + figures[10]);
-		//		System.out.println("Adj.close = "   + figures[11]);
-		//		System.out.println("Adj.volume = "  + figures[12]);
-				
-				//Tutaj trzeba bêdzie sypn¹æ wyj¹tek w tym stylu
-				if (figures[0]!=null && figures[4]!=null)
-				records.add(new Record(date,close));
-				
+				// System.out.println("Date = " + figures[0]);
+				// System.out.println("Open = " + figures[1]);
+				// System.out.println("High = " + figures[2]);
+				// System.out.println("Low = " + figures[3]);
+				// System.out.println("Close = " + figures[4]);
+				// System.out.println("Volume = " + figures[5]);
+				// System.out.println("Ex-dividend = " + figures[6]);
+				// System.out.println("Split ratio = " + figures[7]);
+				// System.out.println("Adj.open " + figures[8]);
+				// System.out.println("Adj.high = " + figures[9]);
+				// System.out.println("Adj.low = " + figures[10]);
+				// System.out.println("Adj.close = " + figures[11]);
+				// System.out.println("Adj.volume = " + figures[12]);
+
+				// Tutaj trzeba bêdzie sypn¹æ wyj¹tek w tym stylu
+				if (figures[0] != null && figures[4] != null)
+					records.add(new Record(date, close));
+
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

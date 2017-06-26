@@ -8,10 +8,12 @@ import java.util.Date;
 //import java.math.BigDecimal;
 
 public class Record {
+
 	private Date date;
 	private double close; // BigDecimal zamiast double?
 
 	public Record(Date date, double close) {
+
 		this.date = date;
 		this.close = close;
 	}
@@ -31,5 +33,4 @@ public class Record {
 	public double getClose() {
 		return this.close;
 	}
-
 }

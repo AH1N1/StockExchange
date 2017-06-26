@@ -16,10 +16,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Company {
+
 	private String name, downloadURL;
 	private List<Record> records;
 
 	public Company(String name, String downloadURL) {
+
 		this.name = name + ".csv";
 		this.downloadURL = downloadURL;
 		this.records = new ArrayList<>();
@@ -27,6 +29,7 @@ public class Company {
 
 	
 	public void downloadCSV() throws IOException {
+
 		// The file that will be saved on your computer
 		String fileName = name;
 		// The file that you want to download
@@ -54,7 +57,7 @@ public class Company {
 
 	public void parserCSV(int Date/*,String name*/) {
 
-		String csvFile = name + "csv";
+		String csvFile = name;
 		BufferedReader br = null;
 		String line = "";
 		String cvsSplitBy = ",";
@@ -62,7 +65,6 @@ public class Company {
 		try {
 			br = new BufferedReader(new FileReader(csvFile));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
@@ -108,7 +110,6 @@ public class Company {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
+	
 }

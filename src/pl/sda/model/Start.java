@@ -14,7 +14,7 @@ public class Start extends Application {
 		launch(args);
 	}
 
-	//Must Be Here
+	//Starting JavaFX
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		new PointAndFigureChart().draw(primaryStage);

@@ -6,13 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import oracle.jrockit.jfr.Recording;
+
 public class StockExchange {
 
 	private List<Company> Companies = new ArrayList<>();
 
 	public StockExchange() {
+		readingFromFile();
+	}
+
+	private void readingFromFile() {
 		try {
-			// Creating new file
+			// Opening file with names and urls
 			BufferedReader br = new BufferedReader(new FileReader("file.txt"));
 
 			String name = br.readLine();
@@ -35,6 +41,10 @@ public class StockExchange {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
+	}
+
+	public List<Company> getCompanies() {
+		return Companies;
 	}
 
 }

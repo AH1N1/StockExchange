@@ -1,54 +1,38 @@
 package pl.sda.technicalanalyse;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
 
 public class PointAndFigureChart {
 
-	public EventHandler<ActionEvent> draw() {
+	public ScatterChart<Number, Number> draw() {
 
-		// Handling chart exceptions
-		try {
-			Stage stage = new Stage();
+		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
+		final NumberAxis yAxis = new NumberAxis(0, 10, 1);
 
-			// Application name
-			stage.setTitle("Technical analysis");
+		final ScatterChart<Number, Number> sc = new ScatterChart<Number, Number>(xAxis, yAxis);
 
-			// Size of chart
-			final NumberAxis xAxis = new NumberAxis(0, 10, 1);
-			final NumberAxis yAxis = new NumberAxis(0, 10, 1);
+		// Axis name
+		xAxis.setLabel("Time");
+		yAxis.setLabel("Price");
 
-			// Axis name
-			final ScatterChart<Number, Number> sc = new ScatterChart<Number, Number>(xAxis, yAxis);
-			xAxis.setLabel("Time");
-			yAxis.setLabel("Price");
+		// Chart name
+		sc.setTitle("Investment Overview");
 
-			// Chart name
-			sc.setTitle("Investment Overview");
+		// Creating series
+		XYChart.Series seriesX = new XYChart.Series();
+		seriesX.setName("X");
+		// seriesX.getData().add(new XYChart.Data(1, 1));
 
-			// Creating series
-			XYChart.Series seriesX = new XYChart.Series();
-			seriesX.setName("X");
-			seriesX.getData().add(new XYChart.Data(1, 1));
+		XYChart.Series seriesO = new XYChart.Series();
+		seriesO.setName("O");
+		// seriesO.getData().add(new XYChart.Data(2, 2));
 
-			XYChart.Series seriesO = new XYChart.Series();
-			seriesO.setName("O");
-			seriesO.getData().add(new XYChart.Data(2, 2));
+		// Adding axis to chart
+		sc.getData().addAll(seriesX, seriesO);
 
-			// Drawing chart
-			sc.getData().addAll(seriesX, seriesO);
-			Scene scene = new Scene(sc, 500, 500);
-			stage.setScene(scene);
-			stage.show();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		
-		return null;
+		return sc;
 	}
+
 }

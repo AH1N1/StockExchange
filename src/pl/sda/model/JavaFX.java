@@ -7,22 +7,56 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import pl.sda.technicalanalyse.PointAndFigureChart;
 
 public class JavaFX {
 
-	final Button button = new Button("Show chart");
+	boolean isChart = true;
 
 	// Starting JavaFX
-	public void startWindow(Stage stage) throws Exception {
+	public void startWindow(Stage stage) {
 
-		// Creating main window
+		// Setting main window
 		stage.setTitle("StockExchange");
-		Scene scene = new Scene(new Group(), 450, 250);
-		// stage.setResizable(false);
+		Scene scene = new Scene(new Group(), 500, 450);
+		stage.setResizable(false);
+
+		// Creating menu bar and adding sub menus
+		MenuBar menuBar = new MenuBar();
+		menuBar.prefWidthProperty().bind(stage.widthProperty());
+
+		Menu fileMenu = new Menu("File");
+		Menu helpMenu = new Menu("Help");
+
+		MenuItem addMenu = new MenuItem("Add Company");
+		MenuItem removeMenu = new MenuItem("Remove Company");
+
+		MenuItem aboutMenu = new MenuItem("About");
+
+		fileMenu.getItems().addAll(addMenu, removeMenu);
+		helpMenu.getItems().addAll(aboutMenu);
+
+		menuBar.getMenus().addAll(fileMenu, helpMenu);
+
+		// Creating toggles
+		ToggleGroup group = new ToggleGroup();
+
+		ToggleButton tb1 = new ToggleButton("1 month");
+		tb1.setToggleGroup(group);
+		tb1.setSelected(true);
+
+		ToggleButton tb2 = new ToggleButton("6 months");
+		tb2.setToggleGroup(group);
+
+		ToggleButton tb3 = new ToggleButton("1 year");
+		tb3.setToggleGroup(group);
 
 		// Creating stockExchange
 		StockExchange stockExchange = new StockExchange();
@@ -34,30 +68,74 @@ public class JavaFX {
 			companyComboBox.getItems().add(stockExchange.getCompanies().get(i).getName());
 		}
 
-		companyComboBox.setPrefWidth(scene.getWidth() * 0.64);
+		companyComboBox.setPrefWidth(scene.getWidth() * 0.415);
+
+		// Creating button
+		final Button button = new Button("Show chart");
 
 		// Grid
 		GridPane grid = new GridPane();
-		
+
 		grid.setVgap(4);
 		grid.setHgap(10);
 		grid.setPadding(new Insets(5, 5, 5, 5));
 
-		grid.add(new Label("Company: "), 0, 0);
-		grid.add(companyComboBox, 1, 0);
-		grid.add(button, 02, 0);
+		grid.add(companyComboBox, 0, 0);
+		grid.add(button, 4, 0);
 
-		// Drawing chart
+		grid.add(tb1, 1, 0);
+		grid.add(tb2, 2, 0);
+		grid.add(tb3, 3, 0);
+
+		// Creating root and adding everything to it
+		Group root = (Group) scene.getRoot();
+
+		root.getChildren().add(grid);
+		root.getChildren().get(0).setTranslateY(25);
+
+		root.getChildren().add(1, new PointAndFigureChart().draw());
+		root.getChildren().get(1).setTranslateY(55);
+
+		root.getChildren().add(2, menuBar);
+		root.getChildren().get(2).setTranslateY(0);
+
+		// Drawing chart // Button action
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				new PointAndFigureChart().draw();
+
+				// Removing old chart
+				if (isChart) {
+					root.getChildren().remove(1);
+					isChart = false;
+				}
+
+				// For testing
+				for (int i = 0; i < stockExchange.getCompanies().size(); i++) {
+					if (stockExchange.getCompanies().get(i).getName().equals(companyComboBox.getValue())) {
+
+						int period;
+
+						if (group.getSelectedToggle().equals(tb1)) {
+							period = 1;
+						} else if (group.getSelectedToggle().equals(tb2)) {
+							period = 6;
+						} else {
+							period = 12;
+						}
+
+						// stockExchange.getCompanies().get(i).parserCSV(period);
+					}
+				}
+
+				root.getChildren().add(1, new PointAndFigureChart().draw());
+				root.getChildren().get(1).setTranslateY(55);
+
+				isChart = true;
 			}
 		});
 
-		// No idea
-		Group root = (Group) scene.getRoot();
-		root.getChildren().add(grid);
+		// Creating window
 		stage.setScene(scene);
 		stage.show();
 	}

@@ -1,5 +1,10 @@
 package pl.sda.model;
 
+import java.io.File;
+
+import javax.imageio.ImageIO;
+
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +17,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pl.sda.technicalanalyse.PointAndFigureChart;
 
@@ -23,6 +30,9 @@ public class JavaFX {
 	// Starting JavaFX
 	public void startWindow(Stage stage) {
 
+		// Creating stockExchange
+				StockExchange stockExchange = new StockExchange();
+				
 		// Setting main window
 		stage.setTitle("StockExchange");
 		Scene scene = new Scene(new Group(), 500, 450);
@@ -35,12 +45,13 @@ public class JavaFX {
 		Menu fileMenu = new Menu("File");
 		Menu helpMenu = new Menu("Help");
 
-		MenuItem addMenu = new MenuItem("Add Company");
-		MenuItem removeMenu = new MenuItem("Remove Company");
+		MenuItem addMenu = new MenuItem("Add company");
+		MenuItem removeMenu = new MenuItem("Remove company");
+		MenuItem saveChartToPNG = new MenuItem("Save chart to .png");
 
 		MenuItem aboutMenu = new MenuItem("About");
 
-		fileMenu.getItems().addAll(addMenu, removeMenu);
+		fileMenu.getItems().addAll(addMenu, removeMenu, saveChartToPNG);
 		helpMenu.getItems().addAll(aboutMenu);
 
 		menuBar.getMenus().addAll(fileMenu, helpMenu);
@@ -57,9 +68,6 @@ public class JavaFX {
 
 		ToggleButton tb3 = new ToggleButton("1 year");
 		tb3.setToggleGroup(group);
-
-		// Creating stockExchange
-		StockExchange stockExchange = new StockExchange();
 
 		// Creating ComboBox with companies
 		final ComboBox<String> companyComboBox = new ComboBox<String>();
@@ -99,7 +107,7 @@ public class JavaFX {
 		root.getChildren().add(2, menuBar);
 		root.getChildren().get(2).setTranslateY(0);
 
-		// Drawing chart // Button action
+		// Drawing chart
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -124,7 +132,7 @@ public class JavaFX {
 							period = 12;
 						}
 
-						// stockExchange.getCompanies().get(i).parserCSV(period);
+						stockExchange.getCompanies().get(i).parserCSV(period);
 					}
 				}
 
@@ -135,8 +143,31 @@ public class JavaFX {
 			}
 		});
 
+		// Saving screenshot
+		saveChartToPNG.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				saveAsPng(stage, scene);
+			}
+		});
+
 		// Creating window
 		stage.setScene(scene);
 		stage.show();
+	}
+
+	private void saveAsPng(Stage stage, Scene scene) {
+		WritableImage image = scene.snapshot(null);
+
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG", "*.png");
+		fileChooser.getExtensionFilters().add(extFilter);
+		File file = fileChooser.showSaveDialog(stage);
+
+		try {
+			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 }

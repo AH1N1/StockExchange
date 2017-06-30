@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import oracle.jrockit.jfr.Recording;
-
 public class StockExchange {
 
 	private List<Company> Companies = new ArrayList<>();

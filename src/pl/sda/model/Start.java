@@ -11,7 +11,7 @@ public class Start extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		new JavaFX().startWindow(primaryStage);
+		new JavaFX().startApplication(primaryStage);
 	}
 
 }

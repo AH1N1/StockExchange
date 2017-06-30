@@ -1,6 +1,9 @@
 package pl.sda.model;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.imageio.ImageIO;
 
@@ -25,14 +28,13 @@ import pl.sda.technicalanalyse.PointAndFigureChart;
 
 public class JavaFX {
 
-	boolean isChart = true;
+	private boolean isChart = true;
 
 	// Starting JavaFX
-	public void startWindow(Stage stage) {
+	public void startApplication(Stage stage) {
+		// Creating new stockExchange
+		StockExchange stockExchange = new StockExchange();
 
-		// Creating stockExchange
-				StockExchange stockExchange = new StockExchange();
-				
 		// Setting main window
 		stage.setTitle("StockExchange");
 		Scene scene = new Scene(new Group(), 500, 450);
@@ -57,17 +59,17 @@ public class JavaFX {
 		menuBar.getMenus().addAll(fileMenu, helpMenu);
 
 		// Creating toggles
-		ToggleGroup group = new ToggleGroup();
+		ToggleGroup toggleGroup = new ToggleGroup();
 
 		ToggleButton tb1 = new ToggleButton("1 month");
-		tb1.setToggleGroup(group);
+		tb1.setToggleGroup(toggleGroup);
 		tb1.setSelected(true);
 
 		ToggleButton tb2 = new ToggleButton("6 months");
-		tb2.setToggleGroup(group);
+		tb2.setToggleGroup(toggleGroup);
 
 		ToggleButton tb3 = new ToggleButton("1 year");
-		tb3.setToggleGroup(group);
+		tb3.setToggleGroup(toggleGroup);
 
 		// Creating ComboBox with companies
 		final ComboBox<String> companyComboBox = new ComboBox<String>();
@@ -76,6 +78,7 @@ public class JavaFX {
 			companyComboBox.getItems().add(stockExchange.getCompanies().get(i).getName());
 		}
 
+		companyComboBox.setValue(stockExchange.getCompanies().get(0).getName());
 		companyComboBox.setPrefWidth(scene.getWidth() * 0.415);
 
 		// Creating button
@@ -111,35 +114,7 @@ public class JavaFX {
 		button.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-
-				// Removing old chart
-				if (isChart) {
-					root.getChildren().remove(1);
-					isChart = false;
-				}
-
-				// For testing
-				for (int i = 0; i < stockExchange.getCompanies().size(); i++) {
-					if (stockExchange.getCompanies().get(i).getName().equals(companyComboBox.getValue())) {
-
-						int period;
-
-						if (group.getSelectedToggle().equals(tb1)) {
-							period = 1;
-						} else if (group.getSelectedToggle().equals(tb2)) {
-							period = 6;
-						} else {
-							period = 12;
-						}
-
-						stockExchange.getCompanies().get(i).parserCSV(period);
-					}
-				}
-
-				root.getChildren().add(1, new PointAndFigureChart().draw());
-				root.getChildren().get(1).setTranslateY(55);
-
-				isChart = true;
+				isChart = drawChart(root, stockExchange, companyComboBox, toggleGroup, tb1, tb2);
 			}
 		});
 
@@ -147,7 +122,7 @@ public class JavaFX {
 		saveChartToPNG.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				saveAsPng(stage, scene);
+				saveAsPng(stage, scene, companyComboBox.getValue(), (ToggleButton)toggleGroup.getSelectedToggle());
 			}
 		});
 
@@ -156,12 +131,56 @@ public class JavaFX {
 		stage.show();
 	}
 
-	private void saveAsPng(Stage stage, Scene scene) {
+	private boolean drawChart(Group root, StockExchange stockExchange, ComboBox<String> companyComboBox,
+			ToggleGroup toggleGroup, ToggleButton tb1, ToggleButton tb2) {
+		// Removing old chart
+		if (isChart) {
+			root.getChildren().remove(1);
+			isChart = false;
+		}
+
+		// For testing
+		for (int i = 0; i < stockExchange.getCompanies().size(); i++) {
+			if (stockExchange.getCompanies().get(i).getName().equals(companyComboBox.getValue())) {
+
+				int period;
+
+				if (toggleGroup.getSelectedToggle().equals(tb1)) {
+					period = 1;
+				} else if (toggleGroup.getSelectedToggle().equals(tb2)) {
+					period = 6;
+				} else {
+					period = 12;
+				}
+
+				// stockExchange.getCompanies().get(i).parserCSV(period);
+			}
+		}
+
+		root.getChildren().add(1, new PointAndFigureChart().draw());
+		root.getChildren().get(1).setTranslateY(55);
+
+		return true;
+	}
+
+	private void saveAsPng(Stage stage, Scene scene, String name, ToggleButton toggleButton) {
+		// Creating image and taking screenshot
 		WritableImage image = scene.snapshot(null);
 
+		// Creating file choosing window
 		FileChooser fileChooser = new FileChooser();
+		// Creating filter only for PNG files
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PNG", "*.png");
 		fileChooser.getExtensionFilters().add(extFilter);
+		
+		// Default path is on Desktop
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/Desktop"));
+		
+		// Default name of PNG file
+		DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+		Date date = new Date();
+		fileChooser.setInitialFileName(name + "_" + toggleButton.getText().replaceAll(" ", ".") + "_" + dateFormat.format(date));
+		
 		File file = fileChooser.showSaveDialog(stage);
 
 		try {

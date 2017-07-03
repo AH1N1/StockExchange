@@ -8,41 +8,49 @@ import java.util.List;
 
 public class StockExchange {
 
-	private List<Company> Companies = new ArrayList<>();
+    private List<Company> Companies = new ArrayList<>();
 
-	public StockExchange() {
-		readingFromFile();
-	}
+    public StockExchange() {
+        readingFromFile();
+        System.out.println(Companies.get(0).toString());
+    }
 
-	private void readingFromFile() {
-		try {
-			// Opening file with names and urls
-			BufferedReader br = new BufferedReader(new FileReader("file.txt"));
+    private void readingFromFile() {
+        try {
+            // Opening file with names and urls
+            BufferedReader br = new BufferedReader(new FileReader("file.txt"));
 
-			String name = br.readLine();
-			String downloadURL = br.readLine();
 
-			int i = 0;
+            //nie lepiej do while ?
+            String name = br.readLine();
+            String downloadURL = br.readLine();
 
-			while (!(name == null)) {
+            int i = 0;
 
-				// Adding company and download .csv
-				Companies.add(new Company(name, downloadURL));
-				Companies.get(i).downloadCSV();
-				i++;
+            while (!(name == null)) {
 
-				name = br.readLine();
-				downloadURL = br.readLine();
-			}
+                // Adding company and download .csv
+                Companies.add(new Company(name, downloadURL));
+                Companies.get(i).downloadCSV();
 
-			br.close();
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-	}
+               //dorazne niekoniecznie tu wywolywac
+                Companies.get(i).parserCSV(30);
 
-	public List<Company> getCompanies() {
-		return Companies;
-	}
+
+                i++;
+
+                name = br.readLine();
+                downloadURL = br.readLine();
+            }
+
+            br.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Company> getCompanies() {
+        return Companies;
+    }
 
 }

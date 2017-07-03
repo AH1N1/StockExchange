@@ -23,11 +23,11 @@ public class PointAndFigureChart {
 		// Creating series
 		XYChart.Series seriesX = new XYChart.Series();
 		seriesX.setName("X");
-		// seriesX.getData().add(new XYChart.Data(1, 1));
+		 seriesX.getData().add(new XYChart.Data(1, 1));
 
 		XYChart.Series seriesO = new XYChart.Series();
 		seriesO.setName("O");
-		// seriesO.getData().add(new XYChart.Data(2, 2));
+		 seriesO.getData().add(new XYChart.Data(2, 2));
 
 		// Adding axis to chart
 		sc.getData().addAll(seriesX, seriesO);

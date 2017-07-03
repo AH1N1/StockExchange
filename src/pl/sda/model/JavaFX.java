@@ -131,6 +131,7 @@ public class JavaFX {
 		stage.show();
 	}
 
+	//powinno dokonywac analizy a potem rysowac
 	private boolean drawChart(Group root, StockExchange stockExchange, ComboBox<String> companyComboBox,
 			ToggleGroup toggleGroup, ToggleButton tb1, ToggleButton tb2) {
 		// Removing old chart
@@ -146,14 +147,17 @@ public class JavaFX {
 				int period;
 
 				if (toggleGroup.getSelectedToggle().equals(tb1)) {
-					period = 1;
+					period = 30;
 				} else if (toggleGroup.getSelectedToggle().equals(tb2)) {
-					period = 6;
-				} else {
-					period = 12;
+					period = 90;
+
+//				}else if(toggleGroup.getSelectedToggle().equals(tb3)){
+//					period = 180;
+				}else {
+					period = 365;
 				}
 
-				// stockExchange.getCompanies().get(i).parserCSV(period);
+				 stockExchange.getCompanies().get(i).parserCSV(period);
 			}
 		}
 

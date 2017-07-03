@@ -9,10 +9,13 @@ import java.util.Date;
 
 public class Record {
 
+	//String date;
 	private Date date;
 	private double close; // BigDecimal zamiast double?
 
 	public Record(Date date, double close) {
+
+		//this.date=date;
 
 		this.date = date;
 		this.close = close;
@@ -26,11 +29,17 @@ public class Record {
 	 * } catch (ParseException e) { e.printStackTrace(); } }
 	 */
 
-	public Date getDate() {
-		return this.date;
-	}
+
 
 	public double getClose() {
 		return this.close;
+	}
+
+	@Override
+	public String toString() {
+		return "Record{" +
+				"date=" + date +
+				", close=" + close +
+				'}';
 	}
 }

@@ -8,6 +8,7 @@ public class PointAndFigureChart {
 
 	public ScatterChart<Number, Number> draw() {
 
+
 		final NumberAxis xAxis = new NumberAxis(0, 10, 1);
 		final NumberAxis yAxis = new NumberAxis(0, 10, 1);
 

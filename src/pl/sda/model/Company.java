@@ -159,7 +159,7 @@ public class Company {
     @Override
     public String toString() {
         StringBuilder recordsStr = new StringBuilder();
-        records.forEach(record -> recordsStr.append(record.toString()));
+        records.forEach(record -> recordsStr.append(record.toString()+"\n"));
         return "Company{" +
                 "name='" + name + '\'' +
                 ", records=" + recordsStr.toString() +

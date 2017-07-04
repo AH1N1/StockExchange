@@ -1,0 +1,4 @@
+1. zapisujemy wartosc wejsciowa w zmiennej A
+2. tworzymy kolejna zmienna B i dodajemy do niej kazda nowa wartosc
+3. jesli zmienna B przekroczy box(B-A>box) to  dodajemy kolumne i ustawiamy zmienna A na ostatnia wartosc, jesli B przekroczy reversal(A-B>revers) to dodajemy kolumne i ustawiamy A na ostatnia wartosc
+4.

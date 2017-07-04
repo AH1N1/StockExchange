@@ -1,5 +1,7 @@
 package pl.sda.model;
 
+import pl.sda.technicalanalyse.PointAndFigureAnalyse;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,6 +37,12 @@ public class StockExchange {
 
                //dorazne niekoniecznie tu wywolywac
                 Companies.get(i).parserCSV(30);
+                PointAndFigureAnalyse analyse = new PointAndFigureAnalyse(Companies.get(i),2,1);
+                try {
+                    analyse.getAnalyse();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
                 i++;

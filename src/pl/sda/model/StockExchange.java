@@ -37,7 +37,7 @@ public class StockExchange {
 
                //dorazne niekoniecznie tu wywolywac
                 Companies.get(i).parserCSV(30);
-                PointAndFigureAnalyse analyse = new PointAndFigureAnalyse(Companies.get(i),2,1);
+                PointAndFigureAnalyse analyse = new PointAndFigureAnalyse(Companies.get(i), 0.1,1);
                 try {
                     analyse.getAnalyse();
                 } catch (Exception e) {
